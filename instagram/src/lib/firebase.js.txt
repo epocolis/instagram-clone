@@ -1,0 +1,11 @@
+change this file name to firebase.js and fill in your firebase credentials
+
+const config = {
+  apiKey: ,
+  authDomain: ,
+  projectId: ,
+  storageBucket: ,
+  messagingSenderId: ,
+  appId: ,
+  measurementId: ,
+};

@@ -1,0 +1,15 @@
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAVZ0sh-bYc9vTj8uGw5L23Cddbkyqf_m8",
+    authDomain: "instagram-clone-5716a.firebaseapp.com",
+    projectId: "instagram-clone-5716a",
+    storageBucket: "instagram-clone-5716a.appspot.com",
+    messagingSenderId: "162743917621",
+    appId: "1:162743917621:web:64f07e0d11f2881001e57c",
+    measurementId: "G-0N6YQWS6CN"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
