@@ -5,7 +5,7 @@ import FirebaseContext from './context/firebase';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={{ firebase, FieldValue }}>
-    <h1 className="text-red-500">Hello, World</h1>,
+    <h1 className="text-red-500">Hello, World</h1>
   </FirebaseContext.Provider>,
   document.getElementById('root')
 );
