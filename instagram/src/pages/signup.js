@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-
+import { doesUsernameExist } from '../services/firebase';
 import FirebaseContext from '../context/firebase';
 
 export default function SignUp() {
@@ -23,27 +23,36 @@ export default function SignUp() {
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    try {
-      const createdUserResult = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(emailAddress, password);
-      await createdUserResult.user.updateProfile({ displayName: userName });
+    const user_name_exists = await doesUsernameExist(userName.toLowerCase());
 
-      await firebase.firestore().collection('users').add({
-        userId: createdUserResult.user.uid,
-        username: userName.toLowerCase(),
-        fullName,
-        emailAddress: emailAddress.toLowerCase(),
-        following: [],
-        followers: [],
-        dateCreated: Date.now(),
-      });
-    } catch (error) {
-      setFullName('');
+    if (!user_name_exists.length) {
+      try {
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(emailAddress, password);
+        await createdUserResult.user.updateProfile({ displayName: userName });
+
+        await firebase.firestore().collection('users').add({
+          userId: createdUserResult.user.uid,
+          username: userName.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLowerCase(),
+          following: [],
+          followers: [],
+          dateCreated: Date.now(),
+        });
+
+        history.push(ROUTES.DASHBOARD);
+      } catch (error) {
+        setFullName('');
+        setError(error.message);
+      }
+    } else {
       setUserName('');
-      setPassword('');
-      setError(error.message);
+      setFullName('');
       setEmailAddress('');
+      setPassword('');
+      setError('That username is already taken, please try another');
     }
   };
 
