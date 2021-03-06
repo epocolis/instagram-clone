@@ -6,6 +6,7 @@ import FirebaseContext from '../context/firebase';
 
 export default function SignUp() {
   const { firebase } = useContext(FirebaseContext);
+
   const history = useHistory();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +20,32 @@ export default function SignUp() {
     userName === '' ||
     fullName === '';
 
-  const handleSignUp = async (event) => {};
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+
+    try {
+      const createdUserResult = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(emailAddress, password);
+      await createdUserResult.user.updateProfile({ displayName: userName });
+
+      await firebase.firestore().collection('users').add({
+        userId: createdUserResult.user.uid,
+        username: userName.toLowerCase(),
+        fullName,
+        emailAddress: emailAddress.toLowerCase(),
+        following: [],
+        followers: [],
+        dateCreated: Date.now(),
+      });
+    } catch (error) {
+      setFullName('');
+      setUserName('');
+      setPassword('');
+      setError(error.message);
+      setEmailAddress('');
+    }
+  };
 
   useEffect(() => {
     document.title = 'Signup - Instagram';
