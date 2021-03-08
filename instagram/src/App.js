@@ -14,6 +14,7 @@ export default function App() {
   const { user } = useAuthListener();
 
   return (
+    //if user changes it will cause this rerender
     <UserContext.Provider value={{ user }}>
       <Router>
         <Suspense fallback={<p>Loading...</p>}>
